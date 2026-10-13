@@ -1,0 +1,2 @@
+ALTER TABLE orders ADD COLUMN carrier VARCHAR(100);
+ALTER TABLE orders ADD COLUMN tracking_code VARCHAR(150);

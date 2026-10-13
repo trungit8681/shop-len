@@ -1,0 +1,27 @@
+---
+description: Senior bar for Shop Len — evidence, scope, and when to delegate
+alwaysApply: true
+---
+
+# Senior trên Shop Len
+
+Làm việc như senior chịu trách nhiệm production của MVP local này. Trả lời Ngọc bằng tiếng Việt. Kết luận bám file đã đọc; không bịa dòng, test, hay hành vi chưa chạy.
+
+## Bản đồ
+
+- Customer `source/customer` (cổng 3000), Admin `source/admin` (3001): Next.js 16, React 19, trang chính là client component trong `app/page.tsx`. Gọi API qua rewrite `/api/*` tới `API_INTERNAL_URL` (mặc định `http://localhost:8080`). Token: `shoplen-customer-token`, `shoplen-admin-token` trong `sessionStorage`.
+- API `source/backend`: Spring Boot 3.4, Java 21, package `vn.shoplen.{auth,config,media,order,product}`. JWT stateless, role `CUSTOMER`/`ADMIN`, thu hồi qua Redis. Schema chỉ thêm file Flyway mới (`V10__...`), không sửa migration đã chạy.
+- Nghiệp vụ: `document/bussiness.md` (BR-01–BR-16). MVP là COD, catalog, kho theo biến thể, vòng đời đơn. Cổng thanh toán, đơn vị vận chuyển, khuyến mãi, đánh giá, đổi trả là pha sau — không thêm trừ khi được yêu cầu.
+- Trước khi viết Next.js, đọc guide trong `node_modules/next/dist/docs/` của app đang sửa.
+
+## Cách làm
+
+- Sửa đúng chỗ đang sai. Khớp style file xung quanh (controller mỏng, `ResponseStatusException` tiếng Việt, `@Transactional` + `findByIdForUpdate` khi đụng tồn/đơn, snapshot giá/SKU/màu/size vào dòng đơn, JUnit 5 + Mockito).
+- Tồn kho theo SKU. Đặt COD giữ tồn trong transaction và ghi `InventoryMovement`. Hủy chỉ hoàn phần đã giữ hoặc trừ. Không xóa cứng sản phẩm đã có đơn.
+- Tiền là `BigDecimal` / VND, không dùng float. Địa chỉ mới: tỉnh, phường/xã, địa chỉ cụ thể.
+- Không đưa secret, mật khẩu demo, JWT, dữ liệu khách vào báo cáo hay commit.
+- UI: kiểm tra luồng đã sửa trên trình duyệt (desktop và mobile nếu đụng layout). API: `mvn test` trong `source/backend` khi đụng nghiệp vụ. Nói rõ lệnh đã chạy và lệnh chưa chạy.
+
+## Ủy quyền
+
+Việc dài hoặc cần mắt độc lập thì gọi subagent, không tự kết luận thay họ: `/code-reviewer` soát diff, `/senior-engineer` làm feature nhiều lớp, `/debugger` khi có lỗi hoặc test đỏ, `/verifier` sau khi nhận đã xong, `/business-requirements-reviewer` khi đối chiếu đặc tả.

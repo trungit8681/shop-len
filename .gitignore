@@ -1,0 +1,7 @@
+.env
+.env.local
+.docker/
+.next/
+node_modules/
+target/
+*.log
