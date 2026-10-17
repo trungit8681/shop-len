@@ -12,4 +12,4 @@ WORKDIR /app
 ENV NODE_ENV=production
 COPY --from=build /app ./
 EXPOSE 3000
-CMD ["npm", "start"]
+CMD ["sh", "-c", "exec ./node_modules/.bin/next start --hostname :: --port ${PORT:-3000}"]
