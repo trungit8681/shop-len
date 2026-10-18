@@ -90,12 +90,12 @@
 .category-browser button{font-size:14px;padding:10px 14px}
 .category-browser button span{font-size:12px}
 .section-top>p{font-size:15px;line-height:1.6}
-.product-card{height:100%}
-.product-info{display:flex;flex-direction:column;flex:1;min-height:0}
+.product-card{height:100%;min-width:0;max-width:100%}
+.product-info{display:flex;flex-direction:column;flex:1;min-height:0;min-width:0;max-width:100%}
 .product-category{font-size:12px;letter-spacing:0;text-transform:none}
 .product-info h3{font-size:20px;line-height:1.3;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
 .product-description{flex:0 1 auto;font-size:13px;line-height:1.55}
-.product-bottom{margin-top:auto;font-size:16px}
+.product-bottom{margin-top:auto;font-size:16px;flex-wrap:wrap;gap:4px 12px}
 .product-bottom span{font-size:13px}
 .variant-select select{font-size:14px;min-height:44px;background:#fff}
 .variant-select button{min-height:44px;font-size:13px;padding:0 14px}
@@ -109,6 +109,12 @@
 .toast{position:fixed;bottom:24px;left:50%;transform:translateX(-50%);z-index:30;width:min(420px,calc(100% - 28px));margin:0;font-size:14px;box-shadow:0 12px 32px #20271e24}
 .empty-state h3{font-size:28px}
 .empty-state p{font-size:15px}
+@media(max-width:700px){
+  .product-grid{grid-template-columns:minmax(0,1fr)}
+  .product-bottom{align-items:flex-start}
+  .variant-select{display:grid;grid-template-columns:minmax(0,1fr)}
+  .variant-select button{padding:10px}
+}
 @media(max-width:620px){
   .masthead nav a,.nav-link,.icon-button,.bag-button{font-size:13px}
   .benefits{font-size:12px}
